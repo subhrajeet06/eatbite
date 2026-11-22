@@ -344,6 +344,7 @@ router.put('/:id/cancel', protect, authorize('customer'), orderIdParamValidator,
 
   invalidateOrderCaches();
 
+  // Notify sellers in real-time that customer cancelled the order
   const io = req.app.get('io');
   if (io) {
     io.to('sellers').emit('order_status_update', {
