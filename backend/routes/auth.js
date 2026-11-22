@@ -41,7 +41,7 @@ const sendVerificationEmail = async (user, req) => {
   const html = `
     <h1>Verify your email address</h1>
     <p>Hi ${user.name},</p>
-    <p>Thanks for creating a HostelBite account! Please verify your email by clicking the link below:</p>
+    <p>Thanks for creating a EatBite account! Please verify your email by clicking the link below:</p>
     <a href="${verifyUrl}" clicktracking=off>${verifyUrl}</a>
     <p>This link will expire in 24 hours.</p>
     <p>If you didn't create this account, you can safely ignore this email.</p>
@@ -49,7 +49,7 @@ const sendVerificationEmail = async (user, req) => {
 
   await sendEmail({
     email: user.email,
-    subject: 'Verify your email — HostelBite',
+    subject: 'Verify your email — EatBite',
     message: `Please verify your email by visiting: ${verifyUrl}`,
     html,
   });
@@ -278,7 +278,7 @@ router.post('/forgot-password', forgotPasswordLimiter, forgotPasswordValidator, 
   try {
     await sendEmail({
       email: user.email,
-      subject: 'Password Reset Token - HostelBite',
+      subject: 'Password Reset Token - EatBite',
       message,
       html
     });
