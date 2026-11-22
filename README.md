@@ -1,6 +1,6 @@
-# 🍟 EatBite — Hostel Snack Delivery System
+# 🍟 EatBite v2.0.0 — Hostel Snack Ordering Platform
 
-A premium, full-stack e-commerce platform designed for hostel snack delivery with three role-based dashboards: **Customer**, **Seller**, and **Admin**. Built with React + Node.js + MongoDB + Socket.io, it offers real-time order updates, secure token-based authentication, password recovery, dynamic performance optimizations, and role-based access control (RBAC).
+A premium, full-stack snack ordering platform designed for hostel snack delivery and room self-pickup with three role-based dashboards: **Customer**, **Seller**, and **Admin**. Built with React + Node.js + MongoDB + Socket.io, it offers real-time order updates, secure token-based authentication, password recovery, dynamic performance optimizations, and role-based access control (RBAC).
 
 ---
 

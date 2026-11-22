@@ -1,6 +1,6 @@
 {
   "name": "eatbite",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "EatBite — Full-stack snack ordering platform",
   "scripts": {
     "install:all": "cd backend && npm install && cd ../frontend && npm install",
