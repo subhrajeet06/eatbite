@@ -1,7 +1,7 @@
 {
-  "name": "hostel-snacks",
+  "name": "eatbite",
   "version": "1.0.0",
-  "description": "HostelBite — Full-stack hostel snack delivery system",
+  "description": "EatBite — Full-stack snack ordering platform",
   "scripts": {
     "install:all": "cd backend && npm install && cd ../frontend && npm install",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
