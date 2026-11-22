@@ -51,9 +51,12 @@ const isOriginAllowed = (origin) => {
   if (!origin) return true;
   if (allowedOrigins.includes(origin)) return true;
   
-  // Securely allow future Vercel Preview deployments for this specific project
-  // Example: https://hostel-snacks-git-v2-self-pickup-subhrajeet-paridas-projects.vercel.app
-  if (/^https:\/\/hostel-snacks-.*-subhrajeet-paridas-projects\.vercel\.app$/.test(origin)) {
+  // Keep the existing production hostname working while allowing the renamed
+  // EatBite hostname and future preview deployments from both project names.
+  if (
+    origin === 'https://eatbite-neon.vercel.app' ||
+    /^https:\/\/(?:hostel-snacks|eatbite)-.*-subhrajeet-paridas-projects\.vercel\.app$/.test(origin)
+  ) {
     return true;
   }
   
@@ -75,7 +78,11 @@ const corsOptions = {
 // Socket.io setup
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    // Use the same allow-list and Vercel preview rules as HTTP CORS.
+    origin: (origin, callback) => {
+      if (isOriginAllowed(origin)) return callback(null, true);
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST'],
   },
 });
@@ -141,7 +148,7 @@ app.use('/api/admin', require('./routes/admin'));
 // Health check
 app.get('/api/health', (req, res) => {
   res.set('Cache-Control', 'no-store');
-  res.json({ success: true, message: '🍟 Hostel Snacks API is running!' });
+  res.json({ success: true, message: '🍟 EatBite API is running!' });
 });
 
 // ─── Socket.io ────────────────────────────────────────────────────────────────
