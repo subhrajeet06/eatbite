@@ -1,4 +1,4 @@
-# 🍟 HostelBite — Hostel Snack Delivery System
+# 🍟 EatBite — Hostel Snack Delivery System
 
 A premium, full-stack e-commerce platform designed for hostel snack delivery with three role-based dashboards: **Customer**, **Seller**, and **Admin**. Built with React + Node.js + MongoDB + Socket.io, it offers real-time order updates, secure token-based authentication, password recovery, dynamic performance optimizations, and role-based access control (RBAC).
 
@@ -7,7 +7,7 @@ A premium, full-stack e-commerce platform designed for hostel snack delivery wit
 ## 📁 Project Structure
 
 ```
-hostel-snacks/
+eatbite/
 ├── package.json                   # Root package manager & orchestration scripts
 ├── backend/
 │   ├── config/
@@ -108,7 +108,7 @@ We provide root commands to simplify installing and starting the entire stack co
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd hostel-snacks
+cd eatbite
 
 # Install all dependencies for both backend and frontend projects
 npm run install:all
@@ -151,18 +151,18 @@ Configure the environment variables:
 | :--- | :--- | :--- |
 | `PORT` | Backend server port | `5000` |
 | `NODE_ENV` | Mode of operation | `development` |
-| `MONGO_URI` | MongoDB connection URI | `mongodb://localhost:27017/hostel-snacks` |
+| `MONGO_URI` | MongoDB connection URI | `mongodb://localhost:27017/eatbite` |
 | `JWT_SECRET` | Secret key for JWT signing | *Choose a strong string* |
 | `JWT_EXPIRE` | JWT duration | `7d` |
 | `ADMIN_EMAIL` | Admin login seed email | `admin@hostel.com` |
 | `ADMIN_PASSWORD` | Admin login seed password | `Admin@123` |
 | `UPI_ID` | Store payment UPI address | `yourupi@upi` |
-| `UPI_NAME` | Payee name displayed in checkout | `Hostel Snacks` |
+| `UPI_NAME` | Payee name displayed in checkout | `EatBite` |
 | `UPI_QR_URL` | Image URL of payment QR code | *URL to your QR asset* |
 | `FRONTEND_URL` | URL of the frontend (for CORS check) | `http://localhost:5173` |
 | `RESEND_API_KEY` | Resend API Key for sending emails | *Your Resend API Token* |
 | `FROM_EMAIL` | Sender email address | `onboarding@resend.dev` |
-| `FROM_NAME` | Sender name shown in mail client | `HostelBite` |
+| `FROM_NAME` | Sender name shown in mail client | `EatBite` |
 | `SLOW_REQUEST_MS` | Warning threshold for API latency | `750` |
 | `AUTH_RATE_LIMIT` | Maximum auth requests per 15-minute window | `40` |
 
@@ -275,7 +275,7 @@ We implemented optimized architectures to ensure efficiency, fast load times, an
 
 ## 🔌 Socket.io Real-Time Event Communication
 
-HostelBite uses WebSockets to bridge customer updates and seller actions instantly without client polling:
+EatBite uses WebSockets to bridge customer updates and seller actions instantly without client polling:
 
 ### Rooms & Channels
 - **`user_<userId>`**: Private room joined by each authenticated client.
