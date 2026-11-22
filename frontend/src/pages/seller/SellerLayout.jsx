@@ -23,7 +23,7 @@ export default function SellerLayout() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">🍟</span>
           <div>
-            <p className="font-display font-bold text-gray-900 dark:text-white text-sm">HostelBite</p>
+            <p className="font-display font-bold text-gray-900 dark:text-white text-sm">EatBite</p>
             <p className="text-xs text-orange-500 font-medium">Seller Panel</p>
           </div>
         </div>

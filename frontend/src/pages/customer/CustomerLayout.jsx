@@ -27,7 +27,7 @@ export default function CustomerLayout() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl">🍟</span>
-            <span className="font-display font-bold text-xl text-gray-900 dark:text-white">HostelBite</span>
+            <span className="font-display font-bold text-xl text-gray-900 dark:text-white">EatBite</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -121,7 +121,7 @@ export default function CustomerLayout() {
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🍟</span>
                   <span className="font-display font-bold text-xl text-gray-900 dark:text-white">
-                    Hostel<span className="text-orange-500">Bite</span>
+                    <span className="text-orange-500">EatBite</span>
                   </span>
                 </div>
                 <button 
@@ -220,7 +220,7 @@ export default function CustomerLayout() {
 
       {/* Footer */}
       <footer className="border-t border-gray-100 dark:border-gray-800 mt-12 py-6 text-center text-sm text-gray-400">
-        🍟 HostelBite © 2026 — Fast snack delivery for hostelers
+        🍟 EatBite © 2026 — Fast snack pickup for hostelers
       </footer>
     </div>
   );

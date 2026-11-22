@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { formatCurrency, formatDate, statusColor, statusLabel } from '../../utils/helpers';
 import toast from 'react-hot-toast';
+import { subscribeSocketEvent } from '../../hooks/useSocket';
 
 const STATUSES = ['all','pending','accepted','preparing','out_for_delivery','delivered','cancelled'];
 
@@ -26,6 +27,25 @@ export default function AdminOrders() {
   };
 
   useEffect(() => { fetchOrders(); }, [filter]);
+
+  useEffect(() => {
+    const unsubNew = subscribeSocketEvent('new_order', () => {
+      toast.success('New order received!');
+      fetchOrders();
+    });
+
+    const unsubStatus = subscribeSocketEvent('order_status_update', ({ orderId, status }) => {
+      if (status === 'cancelled') {
+        toast.error('An order was cancelled by the customer');
+        setOrders((prev) => prev.map((o) => String(o._id) === String(orderId) ? { ...o, status } : o));
+      }
+    });
+
+    return () => {
+      unsubNew();
+      unsubStatus();
+    };
+  }, [filter]);
 
   const updateStatus = async (orderId, status) => {
     setUpdating(orderId);
@@ -135,7 +155,7 @@ export default function AdminOrders() {
                     </span>
                   </div>
                   <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
-                    {order.user?.name} · Room {order.roomNumber} · 📞 {order.phoneNumber}
+                    {order.user?.name} · 📍 Pickup: Hostel Bite Room · 📞 {order.phoneNumber}
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5">{formatDate(order.createdAt)}</p>
                 </div>

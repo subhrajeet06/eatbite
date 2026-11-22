@@ -20,7 +20,7 @@ const sendEmail = async (options) => {
 
     const postData = JSON.stringify({
       sender: {
-        name: process.env.FROM_NAME || 'HostelBite',
+        name: process.env.FROM_NAME || 'EatBite',
         email: process.env.FROM_EMAIL || 'aslofiworld06@gmail.com'
       },
       to: [

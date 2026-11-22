@@ -24,7 +24,7 @@ export default function AdminLayout() {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">🍟</span>
           <div>
-            <p className="font-display font-bold text-white text-sm">HostelBite</p>
+            <p className="font-display font-bold text-white text-sm">EatBite</p>
             <p className="text-xs text-orange-400 font-medium">Admin Panel</p>
           </div>
         </div>
