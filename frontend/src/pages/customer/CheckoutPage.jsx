@@ -6,7 +6,7 @@ import api from '../../utils/api';
 import { formatCurrency } from '../../utils/helpers';
 import toast from 'react-hot-toast';
 
-const UPI_ID = 'hostelbite@upi'; // change to real UPI ID
+const UPI_ID = 'eatbite@upi'; // change to real UPI ID
 const QR_CODE_URL = '/qr-code.png'; // local QR code image in public folder
 
 export default function CheckoutPage() {
