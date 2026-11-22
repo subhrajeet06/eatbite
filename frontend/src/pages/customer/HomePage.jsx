@@ -52,7 +52,7 @@ export default function HomePage() {
     <div className="space-y-10">
       <div className="relative bg-gradient-to-r from-orange-500 to-amber-400 rounded-3xl p-8 md:p-12 overflow-hidden">
         <div className="relative z-10">
-          <p className="text-orange-100 font-medium text-sm mb-2">Hostel Delivery</p>
+          <p className="text-orange-100 font-medium text-sm mb-2">EatBite Snacks</p>
           <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
             Midnight hunger?<br />We got you.
           </h1>
