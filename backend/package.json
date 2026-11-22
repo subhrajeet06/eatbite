@@ -1,5 +1,5 @@
 {
-  "name": "hostel-snacks-backend",
+  "name": "eatbite-backend",
   "version": "1.0.0",
   "description": "Backend for Hostel Snack Delivery System",
   "main": "server.js",
