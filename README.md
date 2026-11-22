@@ -151,7 +151,7 @@ Configure the environment variables:
 | :--- | :--- | :--- |
 | `PORT` | Backend server port | `5000` |
 | `NODE_ENV` | Mode of operation | `development` |
-| `MONGO_URI` | MongoDB connection URI | `mongodb://localhost:27017/eatbite` |
+| `MONGO_URI` | MongoDB connection URI | `mongodb://localhost:27017/hostel-snacks` |
 | `JWT_SECRET` | Secret key for JWT signing | *Choose a strong string* |
 | `JWT_EXPIRE` | JWT duration | `7d` |
 | `ADMIN_EMAIL` | Admin login seed email | `admin@hostel.com` |
