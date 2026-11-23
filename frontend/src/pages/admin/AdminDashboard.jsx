@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import { formatCurrency, formatDate, statusColor, statusLabel } from '../../utils/helpers';
+import RevenueCalendar from '../../components/RevenueCalendar';
 
 function MiniBar({ label, value, max }) {
   const pct = max > 0 ? (value / max) * 100 : 0;
@@ -22,6 +23,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     api.get('/admin/stats').then((res) => setStats(res.data.stats)).catch(() => {}).finally(() => setLoading(false));
   }, []);
+
+  const fetchAdminRevenue = async (date, signal) => {
+    const res = await api.get(`/admin/revenue/daily?date=${date}`, { signal });
+    return { totalRevenue: res.data.totalRevenue, totalOrders: res.data.totalOrders };
+  };
 
   if (loading) return <div className="flex justify-center py-16"><div className="spinner" /></div>;
   if (!stats) return <div className="text-center py-16 text-gray-400">Failed to load stats</div>;
@@ -107,6 +113,11 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Daily Revenue Calendar */}
+      <div className="mt-6">
+        <RevenueCalendar fetchRevenue={fetchAdminRevenue} title="📅 Daily Revenue Calendar" />
       </div>
     </div>
   );

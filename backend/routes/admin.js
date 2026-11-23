@@ -356,4 +356,43 @@ router.get('/audit-logs', async (req, res) => {
   });
 });
 
+// @route   GET /api/admin/revenue/daily?date=YYYY-MM-DD
+// @desc    Get total revenue and order count for a specific date (IST boundaries)
+// @access  Admin
+router.get('/revenue/daily', async (req, res) => {
+  const { date } = req.query;
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ success: false, message: 'Invalid date. Use YYYY-MM-DD format.' });
+  }
+
+  // Compute IST day boundaries (UTC+5:30) and convert to UTC for MongoDB query
+  const startUTC = new Date(date + 'T00:00:00+05:30');
+  const endUTC   = new Date(date + 'T23:59:59.999+05:30');
+
+  const [result] = await Order.aggregate([
+    {
+      $match: {
+        status: 'delivered',
+        createdAt: { $gte: startUTC, $lte: endUTC },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: '$totalAmount' },
+        totalOrders:  { $sum: 1 },
+      },
+    },
+  ]);
+
+  res.set('Cache-Control', 'private, no-store');
+  res.json({
+    success: true,
+    date,
+    totalRevenue: result?.totalRevenue || 0,
+    totalOrders:  result?.totalOrders  || 0,
+  });
+});
+
 module.exports = router;
+
