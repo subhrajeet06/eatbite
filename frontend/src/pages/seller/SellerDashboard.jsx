@@ -4,6 +4,7 @@ import api from '../../utils/api';
 import { formatCurrency, formatDate, statusColor, statusLabel } from '../../utils/helpers';
 import { subscribeSocketEvent } from '../../hooks/useSocket';
 import toast from 'react-hot-toast';
+import RevenueCalendar from '../../components/RevenueCalendar';
 
 export default function SellerDashboard() {
   const [orders, setOrders] = useState([]);
@@ -38,6 +39,11 @@ export default function SellerDashboard() {
   }), [orders, products]);
 
   if (loading) return <div className="flex justify-center py-16"><div className="spinner" /></div>;
+
+  const fetchSellerRevenue = async (date) => {
+    const res = await api.get(`/orders/seller/revenue/daily?date=${date}`);
+    return { totalRevenue: res.data.totalRevenue, totalOrders: res.data.totalOrders };
+  };
 
   return (
     <div>
@@ -122,6 +128,11 @@ export default function SellerDashboard() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Daily Revenue Calendar */}
+      <div className="mt-6">
+        <RevenueCalendar fetchRevenue={fetchSellerRevenue} title="📅 My Daily Revenue" />
       </div>
     </div>
   );

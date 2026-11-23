@@ -357,4 +357,86 @@ router.put('/:id/cancel', protect, authorize('customer'), orderIdParamValidator,
   res.json({ success: true, order: updatedOrder });
 });
 
+// @route   GET /api/orders/seller/revenue/daily?date=YYYY-MM-DD
+// @desc    Get seller's own daily revenue and order count for a specific date (IST boundaries)
+// @access  Seller
+router.get('/seller/revenue/daily', protect, authorize('seller'), async (req, res) => {
+  const { date } = req.query;
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(400).json({ success: false, message: 'Invalid date. Use YYYY-MM-DD format.' });
+  }
+
+  // Seller ID comes from the verified JWT token — never from query params
+  const sellerId = req.user.id;
+
+  // Compute IST day boundaries (UTC+5:30) and convert to UTC for MongoDB query
+  const startUTC = new Date(date + 'T00:00:00+05:30');
+  const endUTC   = new Date(date + 'T23:59:59.999+05:30');
+
+  const [result] = await Order.aggregate([
+    {
+      $match: {
+        'items.seller': require('mongoose').Types.ObjectId.createFromHexString(sellerId),
+        status: 'delivered',
+        createdAt: { $gte: startUTC, $lte: endUTC },
+      },
+    },
+    {
+      $project: {
+        discount: { $ifNull: ['$discount', 0] },
+        rawTotal: {
+          $reduce: {
+            input: '$items',
+            initialValue: 0,
+            in: { $add: ['$$value', { $multiply: ['$$this.price', '$$this.quantity'] }] },
+          },
+        },
+        items: 1,
+      },
+    },
+    { $unwind: '$items' },
+    {
+      $match: {
+        'items.seller': require('mongoose').Types.ObjectId.createFromHexString(sellerId),
+      },
+    },
+    {
+      $project: {
+        itemRevenue: {
+          $cond: [
+            { $gt: ['$rawTotal', 0] },
+            {
+              $subtract: [
+                { $multiply: ['$items.price', '$items.quantity'] },
+                {
+                  $multiply: [
+                    { $divide: [{ $multiply: ['$items.price', '$items.quantity'] }, '$rawTotal'] },
+                    '$discount',
+                  ],
+                },
+              ],
+            },
+            { $multiply: ['$items.price', '$items.quantity'] },
+          ],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: '$itemRevenue' },
+        totalOrders:  { $sum: 1 },
+      },
+    },
+  ]);
+
+  res.json({
+    success: true,
+    date,
+    totalRevenue: result ? Math.round((result.totalRevenue || 0) * 100) / 100 : 0,
+    totalOrders:  result?.totalOrders || 0,
+  });
+});
+
 module.exports = router;
+
