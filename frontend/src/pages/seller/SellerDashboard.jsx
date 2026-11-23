@@ -40,8 +40,8 @@ export default function SellerDashboard() {
 
   if (loading) return <div className="flex justify-center py-16"><div className="spinner" /></div>;
 
-  const fetchSellerRevenue = async (date) => {
-    const res = await api.get(`/orders/seller/revenue/daily?date=${date}`);
+  const fetchSellerRevenue = async (date, signal) => {
+    const res = await api.get(`/orders/seller/revenue/daily?date=${date}`, { signal });
     return { totalRevenue: res.data.totalRevenue, totalOrders: res.data.totalOrders };
   };
 

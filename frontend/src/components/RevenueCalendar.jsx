@@ -66,13 +66,13 @@ export default function RevenueCalendar({ fetchRevenue, title = '📅 Daily Reve
 
     setLoading(true);
     try {
-      const data = await fetchRevenue(dateStr);
+      const data = await fetchRevenue(dateStr, controller.signal);
       if (!controller.signal.aborted) {
         setRevenueData(data);
       }
     } catch (err) {
-      if (!controller.signal.aborted) {
-        setError('Failed to fetch revenue data.');
+      if (!controller.signal.aborted && err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+        setError(err.response?.data?.message || 'Failed to fetch revenue data.');
       }
     } finally {
       if (!controller.signal.aborted) {

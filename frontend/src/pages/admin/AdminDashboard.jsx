@@ -24,8 +24,8 @@ export default function AdminDashboard() {
     api.get('/admin/stats').then((res) => setStats(res.data.stats)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const fetchAdminRevenue = async (date) => {
-    const res = await api.get(`/admin/revenue/daily?date=${date}`);
+  const fetchAdminRevenue = async (date, signal) => {
+    const res = await api.get(`/admin/revenue/daily?date=${date}`, { signal });
     return { totalRevenue: res.data.totalRevenue, totalOrders: res.data.totalOrders };
   };
 

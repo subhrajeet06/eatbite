@@ -385,6 +385,7 @@ router.get('/revenue/daily', async (req, res) => {
     },
   ]);
 
+  res.set('Cache-Control', 'private, no-store');
   res.json({
     success: true,
     date,
