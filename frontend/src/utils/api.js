@@ -76,6 +76,9 @@ api.interceptors.response.use(
     if (error.code === 'ERR_CANCELED' && error.config?._retryAction) {
       return error.config._retryAction();
     }
+    if (error.code === 'ERR_CANCELED') {
+      return Promise.reject(error);
+    }
 
     // Offline error
     if (error.isOffline || !navigator.onLine) {
