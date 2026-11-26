@@ -65,7 +65,7 @@ Every incoming HTTP request is logged (excluding `/api/health`).
 - **Permissions-Policy:** Explicitly disables camera, microphone, geolocation, and payment APIs.
 
 ### 4.2 Cross-Origin Resource Sharing (CORS)
-- **Allowed Origins:** Strictly limited to the origins defined in `FRONTEND_URL`.
+- **Allowed Origins:** Strictly limited to the origins defined in `FRONTEND_URL` and `CORS_ORIGINS`.
 - **Credentials:** Allowed (for authorization headers).
 - **Rejection:** Unauthorized origins receive a CORS error and trigger a `suspicious_request` log event.
 

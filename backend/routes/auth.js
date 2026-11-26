@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 const sendEmail = require('../utils/sendEmail');
+const { getFrontendUrl } = require('../utils/frontendUrl');
 const { logSecurityEvent } = require('../utils/securityLogger');
 const {
   loginLimiter,
@@ -36,7 +37,7 @@ const sendVerificationEmail = async (user, req) => {
   const verificationToken = user.getEmailVerificationToken();
   await user.save({ validateBeforeSave: false });
 
-  const verifyUrl = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
+  const verifyUrl = `${getFrontendUrl()}/verify-email/${verificationToken}`;
 
   const html = `
     <h1>Verify your email address</h1>
@@ -265,17 +266,16 @@ router.post('/forgot-password', forgotPasswordLimiter, forgotPasswordValidator, 
 
   await user.save({ validateBeforeSave: false });
 
-  // Create reset url
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
-  const html = `
-    <h1>You have requested a password reset</h1>
-    <p>Please click on the following link to reset your password:</p>
-    <a href="${resetUrl}" clicktracking=off>${resetUrl}</a>
-  `;
-
   try {
+    const resetUrl = `${getFrontendUrl()}/reset-password/${resetToken}`;
+
+    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+    const html = `
+      <h1>You have requested a password reset</h1>
+      <p>Please click on the following link to reset your password:</p>
+      <a href="${resetUrl}" clicktracking=off>${resetUrl}</a>
+    `;
+
     await sendEmail({
       email: user.email,
       subject: 'Password Reset Token - EatBite',

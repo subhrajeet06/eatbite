@@ -15,6 +15,7 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const { logSecurityEvent } = require('./utils/securityLogger');
 const { requestTimer, responseCompression } = require('./middleware/performance');
 const { requestLogger } = require('./middleware/requestLogger');
+const { getAllowedOrigins, getFrontendUrl } = require('./utils/frontendUrl');
 
 // ─── Boot-time environment validation ──────────────────────────────────────
 // A weak or missing JWT secret undermines every other security control in
@@ -37,11 +38,13 @@ const server = http.createServer(app);
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
-// Parse allowed origins (supports comma-separated FRONTEND_URL for multiple domains)
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
+// Allowed CORS origins (supports comma-separated CORS_ORIGINS and FRONTEND_URL)
+const allowedOrigins = getAllowedOrigins();
+try {
+  getFrontendUrl();
+} catch (err) {
+  console.warn(`⚠️ ${err.message}`);
+}
 
 // Shared origin-check used by both the HTTP CORS middleware and Socket.io.
 // Requests with no Origin header (server-to-server, curl, health checks)
